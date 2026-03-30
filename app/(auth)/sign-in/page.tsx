@@ -1,0 +1,74 @@
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import InputFields from '@/components/forms/InputFields';
+import FooterLink from '@/components/forms/FooterLink';
+import { useRouter } from 'next/navigation';
+
+const SignIn = () => {
+  const router = useRouter()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInFormData>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onBlur',
+  });
+
+  const signInWithEmail = async (data: SignInFormData) => {
+    // Dummy local sign-in implementation; replace with real API call.
+    if (data.email && data.password) {
+      return { success: true };
+    }
+    return { success: false };
+  };
+
+  const onSubmit = async (data: SignInFormData) => {
+    try {
+      const result = await signInWithEmail(data);
+      if (result.success) router.push('/');
+    } catch (e) {
+      console.error(e);
+      alert('Sign in failed: ' + (e instanceof Error ? e.message : 'Failed to sign in.'));
+    }
+  }
+
+  return (
+    <>
+      <h1 className="form-title">Welcome back</h1>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <InputFields
+          name="email"
+          label="Email"
+          placeholder="Enter your email"
+          register={register}
+          error={errors.email}
+          validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/ }}
+        />
+
+        <InputFields
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          type="password"
+          register={register}
+          error={errors.password}
+          validation={{ required: 'Password is required', minLength: 8 }}
+        />
+
+        <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
+          {isSubmitting ? 'Signing In' : 'Sign In'}
+        </Button>
+
+        <FooterLink text="Don't have an account?" linkText="Create an account" href="/sign-up" />
+      </form>
+    </>
+  );
+};
+export default SignIn;
