@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from "react";
-const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>, height: 600) => {
+const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>, height: number) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     useEffect(
         () => {
@@ -14,13 +14,13 @@ const useTradingViewWidget = (scriptUrl: string, config: Record<string, unknown>
             containerRef.current.appendChild(script);
             containerRef.current.dataset.loaded = "true";
             return () => {
-                if(containerRef.current){
+                if (containerRef.current) {
                     containerRef.current.innerHTML = '';
                     delete containerRef.current.dataset.loaded;
                 }
             }
         },
-        [scriptUrl,config,height]
+        [scriptUrl, config, height]
     );
     return containerRef;
 }

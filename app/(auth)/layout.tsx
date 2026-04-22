@@ -1,6 +1,14 @@
 import Link from "next/link"
 import Image from "next/image"
-const layout = ({ children }: { children: React.ReactNode }) => {
+import { headers } from "next/headers"
+import { redirect } from "next/navigation";
+import { getAuth } from "@/lib/better_auth/auth";
+const layout = async ({ children }: { children: React.ReactNode }) => {
+    const auth = await getAuth();
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (session?.user) {
+        redirect('/')
+    }
     return (
         <main className="auth-layout">
             <section className="auth-left-section scrollbar-hide-default">
@@ -27,7 +35,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                 </div>
                 <div className="flex-1 relative">
-                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0"/>
+                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" />
                 </div>
             </section>
         </main>

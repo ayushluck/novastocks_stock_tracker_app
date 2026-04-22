@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import InputFields from '@/components/forms/InputFields';
 import FooterLink from '@/components/forms/FooterLink';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { signInWithEmail } from '@/lib/actions/auth.actions';
 
 const SignIn = () => {
   const router = useRouter()
@@ -20,23 +22,25 @@ const SignIn = () => {
     mode: 'onBlur',
   });
 
-  const signInWithEmail = async (data: SignInFormData) => {
-    // Dummy local sign-in implementation; replace with real API call.
-    if (data.email && data.password) {
-      return { success: true };
-    }
-    return { success: false };
-  };
-
   const onSubmit = async (data: SignInFormData) => {
     try {
       const result = await signInWithEmail(data);
-      if (result.success) router.push('/');
+      if (!result.success) {
+        toast.error('Sign in failed', {
+          description: result.error || 'Invalid email or password'
+        });
+        return;
+      }
+
+      router.push('/');
+      router.refresh();
     } catch (e) {
       console.error(e);
-      alert('Sign in failed: ' + (e instanceof Error ? e.message : 'Failed to sign in.'));
+      toast.error('Sign in failed', {
+        description: e instanceof Error ? e.message : "Failed to sign in"
+      })
     }
-  }
+  };
 
   return (
     <>
@@ -49,7 +53,14 @@ const SignIn = () => {
           placeholder="Enter your email"
           register={register}
           error={errors.email}
-          validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/ }}
+          disabled={isSubmitting}
+          validation={{
+            required: 'Email is required',
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: 'Invalid email address'
+            }
+          }}
         />
 
         <InputFields
@@ -59,7 +70,11 @@ const SignIn = () => {
           type="password"
           register={register}
           error={errors.password}
-          validation={{ required: 'Password is required', minLength: 8 }}
+          disabled={isSubmitting}
+          validation={{
+            required: 'Password is required',
+            minLength: { value: 8, message: 'Password must be at least 8 characters' }
+          }}
         />
 
         <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">

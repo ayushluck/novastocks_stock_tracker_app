@@ -3,22 +3,33 @@ import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from "lucide-react";
 import NavItems from "./NavItems";
-const UserDropdown = () => {
+import { signOut } from "@/lib/actions/auth.actions";
+import { toast } from "sonner";
+const UserDropdown = ({ user }: { user: User }) => {
     const router = useRouter();
-    const handleSignOut = () => {
-        router.push('/sign-in');
+    const handleSignOut = async () => {
+        try {
+            const result = await signOut();
+            if (!result?.success) {
+                toast.error('Sign out failed');
+                return;
+            }
+            router.push('/sign-in');
+            router.refresh();
+        } catch (error) {
+            console.error('Sign out failed', error);
+            toast.error('Sign out failed');
+        }
     }
-    const user = { name: 'Ayush', email: '23051902@kiit.acc.in' };
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -55,7 +66,7 @@ const UserDropdown = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="hidden sm:block bg-gray-600" />
                 <nav className="sm:hidden">
-                    <NavItems/>
+                    <NavItems />
                 </nav>
             </DropdownMenuContent>
         </DropdownMenu>

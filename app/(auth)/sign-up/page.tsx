@@ -6,7 +6,11 @@ import CountrySelect from "@/components/forms/CountrySelect";
 import SelectField from "@/components/forms/SelectField";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import FooterLink from "@/components/forms/FooterLink";
+import { signUpWithEmail } from "@/lib/actions/auth.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 const SignUp = () => {
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -24,13 +28,21 @@ const SignUp = () => {
         },
         mode: 'onBlur'
     },);
+
     const onSubmit = async (data: SignUpFormData) => {
         try {
-            console.log(data);
+            const result = await signUpWithEmail(data);
+            if (result.success) {
+                router.push('/');
+            }
         } catch (e) {
             console.error(e);
+            toast.error('Sign up failed', {
+                description: e instanceof Error ? e.message : "Failed to create a Account"
+            })
         }
-    }
+    };
+
     return (
         <>
             <h1 className="form-title">Sign Up & Personalize</h1>
@@ -59,7 +71,10 @@ const SignUp = () => {
                     type="password"
                     register={register}
                     error={errors.password}
-                    validation={{ required: "Password is Required", minLength: 8, message: "Password must be at least 8 characters" }}
+                    validation={{
+                        required: "Password is Required",
+                        minLength: { value: 8, message: "Password must be at least 8 characters" }
+                    }}
                 />
                 <Controller
                     name="country"
@@ -104,10 +119,10 @@ const SignUp = () => {
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
                     {isSubmitting ? 'Creating Account...' : 'Start Your Investment Journey'}
                 </Button>
-                <FooterLink text="Already Have a Account?" linkText="Sign-In" href="/sign-in"/>
+                <FooterLink text="Already Have a Account?" linkText="Sign-In" href="/sign-in" />
             </form>
         </>
-    )
-}
+    );
+};
 
 export default SignUp
