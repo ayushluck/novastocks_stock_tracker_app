@@ -44,9 +44,9 @@ const SignIn = () => {
 
   return (
     <>
-      <h1 className="form-title">Welcome back</h1>
+      <h1 className="form-title text-5xl md:text-6xl mb-12 leading-none">Welcome back</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <InputFields
           name="email"
           label="Email"
@@ -77,7 +77,7 @@ const SignIn = () => {
           }}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
+        <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-6 text-lg h-14">
           {isSubmitting ? 'Signing In' : 'Sign In'}
         </Button>
 

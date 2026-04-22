@@ -45,8 +45,8 @@ const SignUp = () => {
 
     return (
         <>
-            <h1 className="form-title">Sign Up & Personalize</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <h1 className="form-title text-5xl md:text-6xl mb-12 leading-none">Sign Up & Personalize</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <InputFields
                     name="fullName"
                     label="Full Name"
@@ -116,7 +116,7 @@ const SignUp = () => {
                     control={control}
                     required
                 />
-                <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
+                <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-6 text-lg h-14">
                     {isSubmitting ? 'Creating Account...' : 'Start Your Investment Journey'}
                 </Button>
                 <FooterLink text="Already Have a Account?" linkText="Sign-In" href="/sign-in" />

@@ -3,23 +3,26 @@ import Image from "next/image"
 import NavItems from "./NavItems"
 import UserDropdown from "./UserDropdown"
 
-const Header = ({user}:{user:User}) => {
+const Header = ({ user }: { user: User }) => {
   return (
     <header className="sticky top-0 header">
       <div className="container header-wrapper">
-        <Link href="/">
-          <Image
-            src="/assets/icons/logo.svg"
-            alt="Signalist"
-            height={32}
-            width={140}
-            className="h-8 w-auto cursor-pointer"
-          />
+        <Link href="/" className="inline-flex items-center shrink-0">
+          <span className="relative block h-14 w-56 overflow-hidden rounded-xl">
+            <Image
+              src="/assets/images/logo.png"
+              alt="NovaStocks"
+              fill
+              priority
+              sizes="224px"
+              className="object-cover object-center"
+            />
+          </span>
         </Link>
         <nav className="hidden sm:block">
           <NavItems />
         </nav>
-        <UserDropdown user={user}/>
+        <UserDropdown user={user} />
       </div>
     </header>
   )

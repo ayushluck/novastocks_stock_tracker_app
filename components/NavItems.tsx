@@ -17,17 +17,15 @@ const NavItems = ({ mobile = false }: { mobile?: boolean }) => {
 
   return (
     <ul
-      className={`flex flex-col p-2 gap-2 font-medium ${
-        mobile ? '' : 'sm:flex-row sm:gap-10'
-      }`}
+      className={`flex flex-col p-2 gap-2 font-medium ${mobile ? '' : 'sm:flex-row sm:gap-12 sm:text-lg'
+        }`}
     >
       {NAV_ITEMS.map((item) => (
         <li key={item.href}>
           <Link
             href={item.href}
-            className={`hover:text-yellow-500 transition-colors ${
-              isActive(item.href) ? 'text-gray-100' : ''
-            }`}
+            className={`text-base hover:text-yellow-500 transition-colors ${isActive(item.href) ? 'text-gray-100' : ''
+              }`}
           >
             {item.label}
           </Link>

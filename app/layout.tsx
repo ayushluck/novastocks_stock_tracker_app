@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Signalist",
+  title: "NovaStocks",
   description: "Track Real Time Stock Prices, Get Personalized Alerts And Explore Detailed Company Insights",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

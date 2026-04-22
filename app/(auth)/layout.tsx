@@ -10,17 +10,19 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         redirect('/')
     }
     return (
-        <main className="auth-layout">
+        <main className="auth-layout bg-[radial-gradient(circle_at_top_left,rgba(253,212,88,0.14),transparent_28%),linear-gradient(180deg,#050505_0%,#0a0a0a_100%)]">
             <section className="auth-left-section scrollbar-hide-default">
-                <Link href="/" className="auth-logo">
-                    <Image src="/assets/icons/logo.svg" alt="Signalist" width={140} height={32} className="h-8 w-auto" />
+                <Link href="/" className="auth-logo inline-flex shrink-0">
+                    <span className="relative block h-16 w-64 overflow-hidden rounded-xl">
+                        <Image src="/assets/images/logo.png" alt="NovaStocks" fill priority sizes="256px" className="object-cover object-center" />
+                    </span>
                 </Link>
                 <div className="pb-6 lg:pb-8 flex-1">{children}</div>
             </section>
-            <section className="auth-right-section">
-                <div className="z-10 relative lg:mt-4 lg:mb-16">
+            <section className="auth-right-section bg-[linear-gradient(180deg,rgba(20,20,20,0.92),rgba(33,35,40,0.94))]">
+                <div className="z-10 relative lg:mt-4 lg:mb-16 max-w-2xl">
                     <blockquote className="auth-blockquote">
-                        Signalist turned my watchlist into a winning list.The alerts are spot-on, and I feel more confident making moves in the market
+                        NovaStocks turned my watchlist into a winning list. The alerts are spot-on, and I feel more confident making moves in the market
                     </blockquote>
                     <div className="flex items-center justify-between">
                         <div>
@@ -34,8 +36,8 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
                 </div>
-                <div className="flex-1 relative">
-                    <Image src="/assets/images/dashboard.png" alt="Dashboard Preview" width={1440} height={1150} className="auth-dashboard-preview absolute top-0" />
+                <div className="flex-1 relative mt-8 lg:mt-0">
+                    <Image src="/assets/images/dashboard-preview.png" alt="Dashboard Preview" width={1500} height={1200} className="auth-dashboard-preview absolute top-0" />
                 </div>
             </section>
         </main>

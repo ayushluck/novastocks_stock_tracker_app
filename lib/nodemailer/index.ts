@@ -1,16 +1,13 @@
 import nodemailer from 'nodemailer';
-import { WELCOME_EMAIL_TEMPLATE } from './templates';
+import { WELCOME_EMAIL_TEMPLATE, NEWS_SUMMARY_EMAIL_TEMPLATE } from "@/lib/nodemailer/templates";
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
     auth: {
         user: process.env.NODEMAILER_EMAIL!,
         pass: process.env.NODEMAILER_PASSWORD!,
     }
-});
+})
 
 export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData) => {
     const htmlTemplate = WELCOME_EMAIL_TEMPLATE
@@ -18,12 +15,30 @@ export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData)
         .replace('{{intro}}', intro);
 
     const mailOptions = {
-        from: `"Signalist" <signalist@jsmastery.pro>`,
+        from: `"NovaStocks" <${process.env.NODEMAILER_EMAIL!}>`,
         to: email,
-        subject: `Welcome to Signalist - your stock market toolkit is ready!`,
-        text: 'Thanks for joining Signalist',
+        subject: `Welcome to NovaStocks - your stock market toolkit is ready!`,
+        text: 'Thanks for joining NovaStocks',
         html: htmlTemplate,
     }
 
     await transporter.sendMail(mailOptions);
 }
+
+export const sendNewsSummaryEmail = async (
+    { email, date, newsContent }: { email: string; date: string; newsContent: string }
+): Promise<void> => {
+    const htmlTemplate = NEWS_SUMMARY_EMAIL_TEMPLATE
+        .replace('{{date}}', date)
+        .replace('{{newsContent}}', newsContent);
+
+    const mailOptions = {
+        from: `"NovaStocks News" <${process.env.NODEMAILER_EMAIL!}>`,
+        to: email,
+        subject: `📈 Market News Summary Today - ${date}`,
+        text: `Today's market news summary from NovaStocks`,
+        html: htmlTemplate,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
