@@ -30,6 +30,15 @@ const formatMarketCap = (value?: number) => {
     return `Mkt Cap ${value.toFixed(1)}B`;
 };
 
+const formatAddedDate = (value: Date | string) => {
+    const date = new Date(value);
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+
+    return `${day}/${month}/${year}`;
+};
+
 const WatchlistPageClient = ({ initialItems }: { initialItems: WatchlistItem[] }) => {
     const [items, setItems] = useState<WatchlistItem[]>(initialItems);
     const [pendingSymbol, setPendingSymbol] = useState<string | null>(null);
@@ -131,7 +140,7 @@ const WatchlistPageClient = ({ initialItems }: { initialItems: WatchlistItem[] }
                                     </div>
 
                                     <p className="text-gray-500 text-xs">
-                                        Added {new Date(item.addedAt).toLocaleDateString()}
+                                        Added {formatAddedDate(item.addedAt)}
                                     </p>
                                 </div>
                             </div>
