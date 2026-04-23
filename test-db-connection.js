@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
@@ -50,7 +51,7 @@ const testDatabaseConnection = async () => {
             try {
                 const pingResult = await adminDb.ping();
                 console.log(`\n🏓 Ping Response:`, pingResult);
-            } catch (pingError) {
+            } catch {
                 console.log(`\n⚠️  Ping test skipped`);
             }
         }
