@@ -6,6 +6,20 @@ import { nextCookies } from "better-auth/next-js";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let authInstance: any = null;
 
+const getBaseURL = () => {
+    if (process.env.BETTER_AUTH_URL) {
+        return process.env.BETTER_AUTH_URL;
+    }
+
+    // Vercel auto-provides VERCEL_URL
+    if (process.env.VERCEL_URL) {
+        return `https://${process.env.VERCEL_URL}`;
+    }
+
+    // Fallback for local development
+    return 'http://localhost:3000';
+};
+
 export const getAuth = async () => {
     if (authInstance) {
         return authInstance;
@@ -19,7 +33,7 @@ export const getAuth = async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         database: mongodbAdapter(db as any),
         secret: process.env.BETTER_AUTH_SECRET,
-        baseURL: process.env.BETTER_AUTH_URL,
+        baseURL: getBaseURL(),
         emailAndPassword: {
             enabled: true,
             disableSignUp: false,
