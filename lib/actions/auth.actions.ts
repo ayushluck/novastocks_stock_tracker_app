@@ -10,7 +10,9 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
             body: {
                 email,
                 password,
-                name: fullName
+                name: fullName,
+                // ensure Better Auth redirects / sets callback to dashboard on success
+                callbackURL: '/dashboard'
             }
         })
 
@@ -36,7 +38,7 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
     }
 }
 
-export const signInWithEmail = async ({ email, password}: SignInFormData) => {
+export const signInWithEmail = async ({ email, password }: SignInFormData) => {
     try {
         const authClient = await auth();
         const response = await authClient.api.signInEmail({

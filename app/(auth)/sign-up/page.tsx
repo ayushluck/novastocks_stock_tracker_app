@@ -8,6 +8,7 @@ import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "
 import FooterLink from "@/components/forms/FooterLink";
 import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
 const SignUp = () => {
     const {
         register,
@@ -27,11 +28,14 @@ const SignUp = () => {
         mode: 'onBlur'
     },);
 
+    const router = useRouter();
+
     const onSubmit = async (data: SignUpFormData) => {
         try {
             const result = await signUpWithEmail(data);
             if (result.success) {
-                window.location.assign('/');
+                // navigate to dashboard on successful signup
+                router.push('/dashboard');
             }
         } catch (e) {
             console.error(e);
