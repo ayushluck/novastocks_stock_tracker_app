@@ -6,14 +6,18 @@ import { nextCookies } from "better-auth/next-js";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let authInstance: any = null;
 
+const trimEnv = (value: string | undefined) => value?.trim();
+
 const getBaseURL = () => {
-    if (process.env.BETTER_AUTH_URL) {
-        return process.env.BETTER_AUTH_URL;
+    const configuredUrl = trimEnv(process.env.BETTER_AUTH_URL);
+    if (configuredUrl) {
+        return configuredUrl;
     }
 
     // Vercel auto-provides VERCEL_URL
-    if (process.env.VERCEL_URL) {
-        return `https://${process.env.VERCEL_URL}`;
+    const vercelUrl = trimEnv(process.env.VERCEL_URL);
+    if (vercelUrl) {
+        return `https://${vercelUrl}`;
     }
 
     // Fallback for local development
@@ -29,10 +33,14 @@ export const getAuth = async () => {
     if (!db) {
         throw new Error("Failed to connect to the database");
     }
+    const secret = trimEnv(process.env.BETTER_AUTH_SECRET);
+    if (!secret) {
+        throw new Error("BETTER_AUTH_SECRET must be set in .env");
+    }
     authInstance = betterAuth({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         database: mongodbAdapter(db as any),
-        secret: process.env.BETTER_AUTH_SECRET,
+        secret,
         baseURL: getBaseURL(),
         emailAndPassword: {
             enabled: true,
